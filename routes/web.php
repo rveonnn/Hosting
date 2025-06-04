@@ -25,4 +25,16 @@ Route::middleware('auth')->group(function() {
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+
+    Route::get('/storage/products/{filename}',
+    function ($filename) {
+        $path = storage_path('app/public/products/' . $filename);
+
+        if (!File::exists($path)) {
+            abort(404);
+        }
+
+        return response()->file($path);
+    });
+
 });
